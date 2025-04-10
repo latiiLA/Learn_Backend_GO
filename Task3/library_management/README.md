@@ -41,3 +41,7 @@ This file containes the implementation results of the code. You could say it is 
 
    - Now we can check if the available books is empty, after removing. These can be seen in the following image.
      ![alt text](image-9.png)
+
+7. Exiting the program
+   - You can see below the program exits when clicking the the exit option.
+     ![alt text](image-10.png)
