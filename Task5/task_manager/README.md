@@ -23,7 +23,7 @@ Follow the following steps to see them
     Get all tasks
     Below image shows that get all tasks fetches all tasks.
 
-        - ![alt text](image-4.png)
+    - ![alt text](image-4.png)
 
     Get specific task
     Below images shows that tasks can be fetched by their specific id:
