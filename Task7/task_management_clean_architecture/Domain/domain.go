@@ -27,11 +27,19 @@ type User struct {
 type TaskRepository interface{
 	Create(c context.Context, task *Task) error
 	FetchByUserID(c context.Context, userID string)([]Task, error)
+	FetchAll(c context.Context)([]Task, error)
+	UpdateByTaskID(c context.Context, taskID primitive.ObjectID, updatedData *Task)(int64, int64, error)
+	DeleteByTaskID(c context.Context, taskID primitive.ObjectID)(int64, error)
+	FetchByTaskID(c context.Context, taskID primitive.ObjectID)(Task, error)
 }
 
 type TaskUsecase interface{
 	AddTask(c context.Context, task *Task) error
 	GetTasksByUserID(c context.Context, userID string)([]Task, error)
+	GetAllTasks(c context.Context)([]Task, error)
+	UpdateTask(c context.Context, taskID primitive.ObjectID, updatedData *Task)(int64, int64, error)
+	DeleteTask(c context.Context, taskID primitive.ObjectID)(int64, error)
+	GetSpecificTask(c context.Context, taskID primitive.ObjectID)(Task, error)
 }
 
 type UserRepository interface{
