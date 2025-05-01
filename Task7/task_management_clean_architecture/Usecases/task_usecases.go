@@ -18,13 +18,13 @@ func NewTaskUsecase(taskRepository domain.TaskRepository, timeout time.Duration)
 	}
 }
 
-func (tu *taskUsecase) Create(c context.Context, task *domain.Task)error{
+func (tu *taskUsecase) AddTask(c context.Context, task *domain.Task)error{
 	ctx, cancel := context.WithTimeout(c, tu.contextTimeout)
 	defer cancel()
 	return tu.taskRepository.Create(ctx, task)
 }
 
-func (tu *taskUsecase) FetchByUserID(c context.Context, userID string)([]domain.Task, error){
+func (tu *taskUsecase) GetTasksByUserID(c context.Context, userID string)([]domain.Task, error){
 	ctx, cancel := context.WithTimeout(c, tu.contextTimeout)
 	defer cancel()
 	return tu.taskRepository.FetchByUserID(ctx, userID)
