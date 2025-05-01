@@ -34,6 +34,9 @@ func ValidateToken(tokenString string)(jwt.MapClaims, error){
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok{
+		if !ok{
+			return nil, errors.New("user ID missing in token")
+		}
 		return claims, nil
 	}
 
