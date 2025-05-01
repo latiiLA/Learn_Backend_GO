@@ -39,4 +39,8 @@ func NewTaskRouter(timeout time.Duration, db *mongo.Database, group *gin.RouterG
 	}
 	group.GET("/tasks", tc.Fetch)
 	group.POST("/tasks", tc.Create)
+	group.GET("/alltasks", tc.FetchAll)
+	group.PUT("/tasks/:id", tc.UpdateTask)
+	group.DELETE("/tasks/:id", tc.DeleteTask)
+	group.GET("/tasks/:id", tc.FetchSpecificTask)
 }
