@@ -45,7 +45,7 @@ func main() {
 	r := gin.Default()
 	routers.RouterSetup(jwtSecret, timeout, db, r)
 
-	if err := r.Run(); err != nil {
+	if err := r.Run(":8080"); err != nil {
 		log.Fatalf("Server failed to start: %v", err)
 	}
 }
