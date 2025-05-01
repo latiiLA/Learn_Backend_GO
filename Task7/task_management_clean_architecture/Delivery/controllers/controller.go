@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"net/http"
 	domain "task_management_clean_architecture/Domain"
-	infrastructure "task_management_clean_architecture/Infrastructure"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type ErrorResponse struct {
@@ -46,7 +44,7 @@ func (tc *TaskController)Create(c *gin.Context){
 		return
 	}
 
-	err = tc.TaskUsecase.Create(c, &task)
+	err = tc.TaskUsecase.AddTask(c, &task)
 	if err != nil{
 		c.JSON(http.StatusInternalServerError, ErrorResponse{Message: err.Error()})
 		return
@@ -64,7 +62,7 @@ func (u *TaskController) Fetch(c *gin.Context){
 
 	fmt.Println("Extracted userID:", userID)
 
-	tasks, err := u.TaskUsecase.FetchByUserID(c, userID)
+	tasks, err := u.TaskUsecase.GetTasksByUserID(c, userID)
 	if err != nil{
 		c.JSON(http.StatusInternalServerError, ErrorResponse{Message: err.Error()})
 		return
@@ -82,23 +80,7 @@ func (uc *UserController) Signup(c *gin.Context){
 		return
 	}
 
-	_, err = uc.UserUsecase.FindByUsername(c, user.Username)
-	if err == nil{
-		c.JSON(http.StatusBadRequest, ErrorResponse{Message: "Username already taken"})
-		return
-	}
-
-	encryptedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
-	if err != nil{
-		c.JSON(http.StatusInternalServerError, ErrorResponse{Message: err.Error()})
-		return
-	}
-
-	user.Password = string(encryptedPassword)
-
-	user.UserID = primitive.NewObjectID()
-
-	err = uc.UserUsecase.Create(c, &user)
+	err = uc.UserUsecase.Signup(c, &user)
 	if err != nil{
 		c.JSON(http.StatusInternalServerError, ErrorResponse{Message: err.Error()})
 		return
@@ -118,19 +100,8 @@ func (uc *UserController) Login(c *gin.Context){
 		return
 	}
 
-	user, err := uc.UserUsecase.FindByUsername(c, request.Username)
-	if err != nil{
-		c.JSON(http.StatusNotFound, ErrorResponse{Message: "User not found with the given username"})
-		return
-	}
-
-	if !infrastructure.CheckPasswordHash(request.Password, user.Password){
-		c.JSON(http.StatusUnauthorized, ErrorResponse{Message: "Invalid credentials"})
-		return
-	}
-
-	accessToken, err := infrastructure.GenerateToken(user.UserID, user.Role)
-	if err != nil{
+	user, accessToken, err := uc.UserUsecase.Login(c, request)
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, ErrorResponse{Message: err.Error()})
 		return
 	}
