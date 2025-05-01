@@ -20,7 +20,7 @@ type Task struct {
 type User struct {
 	UserID primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
 	Username string `json:"username" bson:"username"`
-	Password string `json:"-" bson:"password"`
+	Password string `json:"password" bson:"password"`
 	Role string `json:"role" bson:"role"`
 }
 
@@ -30,8 +30,8 @@ type TaskRepository interface{
 }
 
 type TaskUsecase interface{
-	Create(c context.Context, task *Task) error
-	FetchByUserID(c context.Context, userID string)([]Task, error)
+	AddTask(c context.Context, task *Task) error
+	GetTasksByUserID(c context.Context, userID string)([]Task, error)
 }
 
 type UserRepository interface{
@@ -40,6 +40,6 @@ type UserRepository interface{
 }
 
 type UserUsecase interface{
-	Create(c context.Context, user *User)error
-	FindByUsername(c context.Context, username string)(User, error)
+	Signup(c context.Context, user *User)error
+	Login(c context.Context, request User)(User, string, error)
 }
