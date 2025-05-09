@@ -2,27 +2,27 @@ name: Go Unit Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.21'
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.21"
 
-    - name: Install dependencies
-      working-directory: Task8/go_testify
-      run: go mod tidy
+      - name: Install dependencies
+        working-directory: Task8/go_testify
+        run: go mod tidy
 
-    - name: Run unit tests
-      working-directory: Task8/go-testify
-      run: go test ./... -v
+      - name: Run unit tests
+        working-directory: Task8/go_testify
+        run: go test ./... -v
