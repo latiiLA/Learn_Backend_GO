@@ -26,3 +26,9 @@ jobs:
       - name: Run unit tests
         working-directory: Task8/go_testify
         run: go test ./... -v
+
+    services:
+      mongo:
+        image: mongo:5.0
+        ports:
+          - 27017:27017
