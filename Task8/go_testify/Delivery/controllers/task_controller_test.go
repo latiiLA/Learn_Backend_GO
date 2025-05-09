@@ -63,7 +63,7 @@ func (s *TaskControllerTestSuite) TestCreate(){
 		s.MockUsecase.AssertExpectations(s.T())
 	})
 
-	s.Run("Failure_InvalidJSON", func ()  {
+	s.Run("InvalidJSON", func ()  {
 		invalidJSON := []byte(`{"Title": "Invalid JSON"`)
 
 		req := httptest.NewRequest(http.MethodPost, "/tasks", bytes.NewBuffer(invalidJSON))
